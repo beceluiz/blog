@@ -1,0 +1,46 @@
+---
+title: 'My SSD is Dying'
+date: '2024-11-06'
+lastmod: '2024-11-21'
+tags: ['Java', 'Android-Studio', 'SQLite', 'SQL']
+draft: false
+summary: 'updating my study life'
+images: ['/static/images/canada/mountains.jpg', '/static/images/canada/toronto.jpg']
+authors: ['default']
+layout: PostLayout
+---
+
+# My SSD is Dying
+
+## The Holiday Project
+
+I was chilling on the holiday day-off at home, so I thought I could code some Android App for pratice for the last exams, And I was thinking "what app should I make? " after thinking for a little a came to a conclusion, I need to build an app that solve a real problem, An app that can solve my problems, your problems. So I decided "I will make a Finance Control App".
+
+For me atleast, it will be so much useful, on this app, I'd be able to record every purchase I make, and tag them to a specific group like, "Food", "Hygiene", "Rental" so in the end of the month, it'll show how much I spent that mont in each category and my final and show my final balance aswell.
+
+I know how to build apps that don't keep the data for the next use, Apps that you will use once, and after close the app and open again, it's like you're opening it for the first time, But that's not the case, I need to keep the balance and the purchase history there every time even if I close the app, restart the phone...
+
+#### SharedPreferences
+So I started my research on how to keep the data in the app even if I close it, I heard about "SharedPreferences" which can save data in a key-value format in XML, it's look really useful for small things like user preferences or simple data like a last login or last visualization, but I can't use it for the main function of the app.
+
+#### File Storage
+I heard I can store data on files that you can access by the app or export for you device, It's looks really useful if I need to export the data in a CSV or PDF format, but it's not simple or effective to manipulate the data here such as transactions, update balance.
+Maybe I can use it to export a Monthly Financial Document, but not for the main function of the app again. 
+
+#### SQLite Database
+The most obvious one is a SQL-based Database, It will be kind of hard to setup the whole Database because it's verbose and you need to make queries manually, but I'm down for it.
+
+#### Room
+I heard about Room as well, which is a ORM-like Library, but I think for the small apps the raw SQL would be better, for me, I mean, I don't want to skip steps it will be easier to read and understand the structure and interact more with manual queries so I think I'd be able to improve more with Raw SQL.
+
+#### Let's build the APP!!!
+So I have everything now: time, I'm willing to do it, I know the tools I need to use and I know how to, so it's just start and build the app by scretch right? Wrong.
+When I started the project on the Android Studio, my PC started to make a noise like it was a Helicopter trying to fly, everything on the screen freezed, and after like 30mins the build.gradle wasn't finished yet.
+I started to think it was because I was running the last version released so, I got from my Professor, an old Android Studio Version (2020.2 - Arctic Fox), Didn't work as well.
+
+#### Resolution
+So I plugged an old Notebook HD I had in my house and tried to install the Androi Studio on it, and it worked better than my SSD, so I came to a conclusion the SSD is the problem.
+I will try to get a new one in the Black Friday, until this day, I will put my Finance Control on hold.
+
+
+<!-- <img src="/public/static/images/php_meme.png"> -->
