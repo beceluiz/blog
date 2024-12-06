@@ -1,0 +1,112 @@
+---
+title: 'The biggest crime in the SQL/PHP history'
+date: '2024-11-06'
+lastmod: '2024-11-29'
+tags: ['PHP', 'HTML', 'CSS', 'SQL']
+draft: false
+summary: 'updating the progress of my tcc'
+images: ['/static/images/canada/mountains.jpg', '/static/images/canada/toronto.jpg']
+authors: ['default']
+layout: PostLayout
+---
+
+# The biggest crime in the SQL/PHP history
+
+## I think I just commited the worst crime in the SQL/PHP History
+
+All started when I was coding the web application of my TCC.
+For context our group idea is a Free Pre-College Study Plataform and the Web Application, the stack is HTML,CSS,JAVASCRIPT and PHP.
+
+We have two specific pages that works similar:
+- **Tips**: on this page there's a bunch of tips that the users that have admins permissions can post to help the students on the learning process.
+
+- **Feedbacks**: on this page only the user's that don't have admins permissions can register a feedback (we can rate our own plataform).
+
+And i thought about a feature, when the user register a tip/feedbacks, on the page that displays all the tips/feedbacks it will be on each one,
+ the name of the user that make that post and the date.
+
+The date wasn't really a problem to be honest, each PHP and SQL had they own getDate() functions that bring the actual date and works pretty well.
+The problem was got the name from the Database.
+
+For example, If i have these 2 tables
+
+```sql
+CREATE TABLE user (
+    id_user IDENTITY(1,1) PRIMARY KEY,
+    name_user VARCHAR(20),
+    login_user VARCHAR(20),
+    user_password VARCHAR(255)
+)
+
+CREATE TABLE tip (
+    id_tip IDENTITY(1,1) PRIMARY KEY,
+    id_user INT NOT NULL,
+    title_tip VARCHAR(255),
+    text_tip VARCHAR(MAX)
+    FOREIGN KEY (id_user) REFERENCES user (id_user)
+)
+```
+When the user Log-in, whe store his id_user using the $_SESSION FROM PHP
+
+```PHP
+$_SESSION['id_user'] = $queryResult['id_user'];
+```
+Then when he post a tip, we just need insert that id in the tip table;
+ ```SQL
+INSERT INTO tip (id_user,title_tip,text_tip) VALUES($_SESSION['id_user'],'how to become rich', 'won the lottery');
+```
+
+Then you will say me, "It's easy isn't it? you already putting the foreign key that references the user_id of the user table, now in the page that display the tips, you just need to make a query using JOIN bring the name_user that's belong to the FK id_user(the user that made the post).
+
+Yes, exactly, but our Professor don't thaught us how to do it yet, and when i was about to search for my self, i found it kinda complexity at first, but i fell like it would be easy to do in that case.
+
+But i was running out of time, the deadline was so close, and if i would use JOIN, i would probably need to use for the page that the course vids were (the videos are in the front-end for now).
+
+### Heureca!!!
+Then I had an ideia, what if when the user log-in, besides i store the id_user using $_SESSION i can also store the name_user
+
+```php
+        $_SESSION['id_user'] = $queryResult['id_user'];
+        $_SESSION['name_user'] = $resultado['name_user'];
+```
+
+then i created a column name_user on the tip table to work like a foreign key (but it's not)
+```sql
+CREATE TABLE tip (
+    id_tip IDENTITY(1,1) PRIMARY KEY,
+    id_user INT NOT NULL,
+    title_tip VARCHAR(255),
+    text_tip VARCHAR(MAX)
+    name_user VARCHAR(20),
+    FOREIGN KEY (id_user) REFERENCES user (id_user)
+)
+``` 
+then when a user post a tip, we store the name_user on tip table
+
+```php
+ $sql = $pdo->prepare("INSERT INTO tip (title_tip, text_tip, id_user, name_user) 
+                          VALUES (:text_tip, :title_tip, :id_user, :name_user)");
+    $id_user = $_SESSION['id_user'];
+    $name_user = $_SESSION['name_user'];
+    $title_tip = $POST['title_tip'];
+    $text_tip = $POST['text_tip'];
+
+
+    $sql->bindValue(":text_tip", value: $text_tip);
+    $sql->bindValue(":title_tip", value: $text_tip);
+    $sql->bindValue(":id_user", value: $id_user);
+    $sql->bindValue(":name_user", value: $name_user);
+    $sql->execute();
+```
+
+So in the 'Tips' page, the query will search the name_user on tips table and display it under the post title and the post text.
+
+I really found funny how it's works well but it doesn't scale, if the user change his name, it won't change his name under the tip, because we are not getting the name through the user table, it's a static and temporary method.
+
+### SQL Island
+
+I found myself stuck in a game called SQL Island, Where you need to write SQL Queries to escape from a foreign island.
+
+Can you guess what part i'm struggling to pass through? exactly, i need to use JOIN.
+
+So i'll learn it, and i'll be back to tell you guys i won SQL Island, and implemented JOIN's on my TCC Web Applcation aswell, see ya
